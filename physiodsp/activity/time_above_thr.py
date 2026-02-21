@@ -34,7 +34,7 @@ class TimeAboveThr(BaseAlgorithm):
         imu_matrix = data.to_matrix()
         above_thr = (abs(imu_matrix) >= self.settings.threshold).astype(int)
         # Add timestamp column
-        above_thr = concatenate([data.timestamps, above_thr], axis=1)
+        above_thr = concatenate([data.timestamps.reshape(-1, 1), above_thr], axis=1)
 
         self.values = DataFrame({"timestamps": above_thr[:, 0], "x": above_thr[:, 1], "y": above_thr[:, 2], "z": above_thr[:, 3]}).rolling(
             window=int(self._window_len * data.fs),

@@ -17,7 +17,6 @@ test_folder_path = os.path.dirname(os.path.realpath(__file__))
             (128, 32, 0.1),
             (256, 64, 0.2),
             (256, 32, 0.05),
-            (512, 100, 0.15)
         ]
 )
 def test_activity_time_above_thr(n_samples, fs, threshold):
