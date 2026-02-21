@@ -35,5 +35,5 @@ extra:
   version: v0.1.0-beta
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/matteo-serafino/py-physio-dsp
+      link: https://github.com/matteo-serafino/physiodsp
       name: GitHub
