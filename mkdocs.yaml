@@ -1,0 +1,39 @@
+site_name: PhysioDSP
+site_url: https://github.com/matteo-serafino/py-physio-dsp
+repo_url: https://github.com/matteo-serafino/py-physio-dsp
+repo_name: matteo-serafino/py-physio-dsp
+edit_uri: edit/main/docs/
+nav:
+  - Home: index.md
+  - About: about.md
+  - Algorithms:
+      - Activity Algorithms:
+          - ENMO: algorithms/enmo.md
+          - Zero Crossing: algorithms/zero_crossing.md
+          - Time Above Threshold: algorithms/time_above_threshold.md
+          - PIM: algorithms/pim.md
+          - Activity Score: algorithms/activity_score.md
+      - Cardiac Algorithms:
+          - ECG Peak Detection: algorithms/ecg_peak_detection.md
+          - HRV Score: algorithms/hrv_score.md
+theme:
+  name: material
+  palette:
+    scheme: dark
+    primary: deep orange
+  features:
+    - header.autohide
+    - navigation.instant
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+plugins:
+  - search:
+      lang: en
+extra:
+  version: v0.1.0-beta
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/matteo-serafino/py-physio-dsp
+      name: GitHub

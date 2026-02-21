@@ -1,0 +1,44 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel"
+]
+
+[project]
+name = "physiodsp"
+version = "0.1.0-beta"
+description = "A comprehensive Python library for processing and analyzing physiological sensor data"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {name = "Matteo Serafino", email = "example@gmail.com"}
+]
+license = {text = "GPL-3.0-only"}
+keywords = ["physiological", "signal processing", "wearable", "sensors", "activity", "heart rate", "ECG"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps."
+]
+dependencies = [
+    "numpy>=2.4.0",
+    "pandas>=2.3.3",
+    "scipy>=1.16.3",
+    "pydantic>=2.12.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/matteo-serafino/physiodsp"
+"Documentation" = "https://github.com/matteo-serafino/physiodsp"
+"Repository" = "https://github.com/matteo-serafino/physiodsp"
+"Issues" = "https://github.com/matteo-serafino/physiodsp"
+
+[tool.setuptools]
+packages = ["physiodsp"]
+
+[tool.setuptools.package-data]
+physiodsp = ["py.typed"]
