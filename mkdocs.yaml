@@ -1,7 +1,7 @@
 site_name: PhysioDSP
-site_url: https://github.com/matteo-serafino/py-physio-dsp
-repo_url: https://github.com/matteo-serafino/py-physio-dsp
-repo_name: matteo-serafino/py-physio-dsp
+site_url: https://github.com/matteo-serafino/physiodsp
+repo_url: https://github.com/matteo-serafino/physiodsp
+repo_name: matteo-serafino/physiodsp
 edit_uri: edit/main/docs/
 nav:
   - Home: index.md
