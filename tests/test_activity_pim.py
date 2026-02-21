@@ -126,7 +126,7 @@ def test_pim_algorithm_properties():
 
 def test_pim_estimate_returns_self():
     """Test that estimate method returns self for method chaining"""
-    df = read_csv("/Users/ms/Documents/repo/py-physio-dsp/tests/accelerometer.csv", usecols=["x", "y", "z"])
+    df = read_csv(os.path.join(test_folder_path, "accelerometer.csv"), usecols=["x", "y", "z"])
     timestamp_start = datetime.now().timestamp()
     timestamps = timestamp_start + arange(start=0, step=1/32, stop=4)
     imu_data = IMUData(
