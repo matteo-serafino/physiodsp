@@ -1,3 +1,4 @@
+import os
 import pytest
 from datetime import datetime
 
@@ -5,6 +6,8 @@ from numpy import arange
 from pandas import read_csv
 from physiodsp.sensors.imu.accelerometer import AccelerometerData
 from physiodsp.activity.zero_crossing import ZeroCrossing
+
+test_folder_path = os.path.dirname(os.path.realpath(__file__))
 
 
 @pytest.mark.parametrize(
@@ -15,9 +18,9 @@ from physiodsp.activity.zero_crossing import ZeroCrossing
             (128)
         ]
 )
-def test_activity_enmo(fs):
+def test_activity_zero_crossing(fs):
 
-    df = read_csv("/Users/ms/Documents/repo/py-physio-dsp/tests/accelerometer.csv", usecols=["x", "y", "z"])
+    df = read_csv(os.path.join(test_folder_path, "accelerometer.csv"), usecols=["x", "y", "z"])
     n_samples = len(df)
 
     timestamp_start = datetime.now().timestamp()
@@ -36,4 +39,12 @@ def test_activity_enmo(fs):
     zcr_1s = processor.biomarker
     zcr_60s = processor.biomarker_agg
 
-    assert True
+    assert len(zcr_1s) == int(n_samples / fs) - 1
+    assert len(zcr_60s) >= 1
+    assert "x" in zcr_1s.columns
+    assert "y" in zcr_1s.columns
+    assert "z" in zcr_1s.columns
+    assert "timestamps" in zcr_1s.columns
+    assert zcr_1s["x"].dtype in [int, float]
+    assert zcr_1s["y"].dtype in [int, float]
+    assert zcr_1s["z"].dtype in [int, float]

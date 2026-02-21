@@ -1,3 +1,4 @@
+import os
 import pytest
 from datetime import datetime
 
@@ -5,6 +6,9 @@ from numpy import arange, ones, zeros
 from pandas import read_csv
 from physiodsp.sensors.imu.base import IMUData
 from physiodsp.activity.time_above_thr import TimeAboveThr, TimeAboveThrSettings
+
+
+test_folder_path = os.path.dirname(os.path.realpath(__file__))
 
 
 @pytest.mark.parametrize(
@@ -19,7 +23,7 @@ from physiodsp.activity.time_above_thr import TimeAboveThr, TimeAboveThrSettings
 def test_activity_time_above_thr(n_samples, fs, threshold):
     """Test TimeAboveThr algorithm with various parameters"""
 
-    df = read_csv("/Users/ms/Documents/repo/py-physio-dsp/tests/accelerometer.csv", usecols=["x", "y", "z"])
+    df = read_csv(os.path.join(test_folder_path, "accelerometer.csv"), usecols=["x", "y", "z"])
 
     timestamp_start = datetime.now().timestamp()
     timestamps = timestamp_start + arange(start=0, step=1/fs, stop=int(n_samples/fs))

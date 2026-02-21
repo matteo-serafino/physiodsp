@@ -1,3 +1,4 @@
+import os
 import pytest
 from datetime import datetime
 
@@ -5,6 +6,9 @@ from numpy import arange
 from pandas import read_csv
 from physiodsp.sensors.imu.accelerometer import AccelerometerData
 from physiodsp.activity.enmo import ENMO
+
+
+test_folder_path = os.path.dirname(os.path.realpath(__file__))
 
 
 @pytest.mark.parametrize(
@@ -17,7 +21,7 @@ from physiodsp.activity.enmo import ENMO
 )
 def test_activity_enmo(n_samples, fs):
 
-    df = read_csv("/Users/ms/Documents/repo/py-physio-dsp/tests/accelerometer.csv", usecols=["x", "y", "z"])
+    df = read_csv(os.path.join(test_folder_path, "accelerometer.csv"), usecols=["x", "y", "z"])
 
     timestamp_start = datetime.now().timestamp()
     timestamps = timestamp_start + arange(start=0, step=1/fs, stop=int(n_samples/fs))
