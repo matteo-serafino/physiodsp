@@ -28,10 +28,10 @@ def test_activity_score_excellent(baseline_window_days):
     # Excellent current day (slightly above baseline)
     current_day = {
         'date': datetime.now(),
-        'steps': np.random.randint(12500, 14000),
-        'sleep_hours': np.random.uniform(8.2, 8.8),
+        'steps': np.random.randint(13500, 14000),
+        'sleep_hours': np.random.uniform(7.8, 8.0),
         'training_minutes': np.random.randint(60, 75),
-        'resting_minutes': np.random.randint(540, 580)
+        'resting_minutes': np.random.randint(540, 560)
     }
 
     all_data = DataFrame({
