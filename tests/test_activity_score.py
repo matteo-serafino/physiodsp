@@ -19,19 +19,19 @@ def test_activity_score_excellent(baseline_window_days):
     dates = [datetime.now() - timedelta(days=x) for x in range(baseline_window_days, 0, -1)]
     baseline_data = {
         'date': dates,
-        'steps': np.random.randint(11000, 13500, baseline_window_days).tolist(),
-        'sleep_hours': np.random.uniform(7.7, 8.5, baseline_window_days).tolist(),
-        'training_minutes': np.random.randint(55, 70, baseline_window_days).tolist(),
-        'resting_minutes': np.random.randint(520, 560, baseline_window_days).tolist()
+        'steps': np.random.randint(12000, 13000, baseline_window_days).tolist(),
+        'sleep_hours': np.random.uniform(8.0, 8.3, baseline_window_days).tolist(),
+        'training_minutes': np.random.randint(65, 75, baseline_window_days).tolist(),
+        'resting_minutes': np.random.randint(540, 570, baseline_window_days).tolist()
     }
 
-    # Excellent current day (slightly above baseline)
+    # Excellent current day (at or above baseline)
     current_day = {
         'date': datetime.now(),
-        'steps': np.random.randint(13500, 14000),
-        'sleep_hours': np.random.uniform(7.8, 8.0),
-        'training_minutes': np.random.randint(60, 75),
-        'resting_minutes': np.random.randint(540, 560)
+        'steps': np.random.randint(12500, 13500),
+        'sleep_hours': np.random.uniform(8.1, 8.4),
+        'training_minutes': np.random.randint(70, 85),
+        'resting_minutes': np.random.randint(550, 580)
     }
 
     all_data = DataFrame({
@@ -109,19 +109,19 @@ def test_activity_score_fair(baseline_window_days):
     dates = [datetime.now() - timedelta(days=x) for x in range(baseline_window_days, 0, -1)]
     baseline_data = {
         'date': dates,
-        'steps': np.random.randint(5500, 6500, baseline_window_days).tolist(),
-        'sleep_hours': np.random.uniform(6.8, 7.3, baseline_window_days).tolist(),
-        'training_minutes': np.random.randint(25, 35, baseline_window_days).tolist(),
-        'resting_minutes': np.random.randint(460, 500, baseline_window_days).tolist()
+        'steps': np.random.randint(7500, 8500, baseline_window_days).tolist(),
+        'sleep_hours': np.random.uniform(7.5, 8.0, baseline_window_days).tolist(),
+        'training_minutes': np.random.randint(45, 55, baseline_window_days).tolist(),
+        'resting_minutes': np.random.randint(500, 540, baseline_window_days).tolist()
     }
 
-    # Fair current day
+    # Fair current day (slightly below baseline)
     current_day = {
         'date': datetime.now(),
-        'steps': np.random.randint(6000, 7000),
-        'sleep_hours': np.random.uniform(7.0, 7.4),
-        'training_minutes': np.random.randint(30, 40),
-        'resting_minutes': np.random.randint(480, 510)
+        'steps': np.random.randint(5500, 6500),
+        'sleep_hours': np.random.uniform(6.8, 7.2),
+        'training_minutes': np.random.randint(35, 45),
+        'resting_minutes': np.random.randint(470, 500)
     }
 
     all_data = DataFrame({
@@ -154,19 +154,19 @@ def test_activity_score_poor(baseline_window_days):
     dates = [datetime.now() - timedelta(days=x) for x in range(baseline_window_days, 0, -1)]
     baseline_data = {
         'date': dates,
-        'steps': np.random.randint(2500, 3500, baseline_window_days).tolist(),
-        'sleep_hours': np.random.uniform(5.2, 5.8, baseline_window_days).tolist(),
-        'training_minutes': np.random.randint(5, 15, baseline_window_days).tolist(),
-        'resting_minutes': np.random.randint(400, 440, baseline_window_days).tolist()
+        'steps': np.random.randint(5000, 6000, baseline_window_days).tolist(),
+        'sleep_hours': np.random.uniform(5.5, 6.0, baseline_window_days).tolist(),
+        'training_minutes': np.random.randint(15, 25, baseline_window_days).tolist(),
+        'resting_minutes': np.random.randint(420, 460, baseline_window_days).tolist()
     }
 
-    # Poor current day
+    # Poor current day (significantly below baseline)
     current_day = {
         'date': datetime.now(),
-        'steps': np.random.randint(2000, 3000),
-        'sleep_hours': np.random.uniform(4.8, 5.4),
-        'training_minutes': np.random.randint(0, 10),
-        'resting_minutes': np.random.randint(380, 420)
+        'steps': np.random.randint(2500, 3500),
+        'sleep_hours': np.random.uniform(4.0, 4.8),
+        'training_minutes': np.random.randint(5, 15),
+        'resting_minutes': np.random.randint(300, 350)
     }
 
     all_data = DataFrame({
@@ -199,19 +199,19 @@ def test_activity_score_critical(baseline_window_days):
     dates = [datetime.now() - timedelta(days=x) for x in range(baseline_window_days, 0, -1)]
     baseline_data = {
         'date': dates,
-        'steps': np.random.randint(800, 1200, baseline_window_days).tolist(),
-        'sleep_hours': np.random.uniform(3.8, 4.3, baseline_window_days).tolist(),
-        'training_minutes': np.random.randint(0, 5, baseline_window_days).tolist(),
-        'resting_minutes': np.random.randint(280, 320, baseline_window_days).tolist()
+        'steps': np.random.randint(2500, 3500, baseline_window_days).tolist(),
+        'sleep_hours': np.random.uniform(5.0, 5.5, baseline_window_days).tolist(),
+        'training_minutes': np.random.randint(5, 15, baseline_window_days).tolist(),
+        'resting_minutes': np.random.randint(380, 420, baseline_window_days).tolist()
     }
 
-    # Critical current day
+    # Critical current day (significantly below baseline)
     current_day = {
         'date': datetime.now(),
-        'steps': np.random.randint(300, 700),
-        'sleep_hours': np.random.uniform(2.8, 3.5),
-        'training_minutes': np.random.randint(0, 3),
-        'resting_minutes': np.random.randint(240, 280)
+        'steps': np.random.randint(200, 500),
+        'sleep_hours': np.random.uniform(2.5, 3.5),
+        'training_minutes': np.random.randint(0, 2),
+        'resting_minutes': np.random.randint(150, 200)
     }
 
     all_data = DataFrame({
