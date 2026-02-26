@@ -32,7 +32,7 @@ theme:
 plugins:
   - search:
       lang: en
-  - coverage:
+  - coverage
 extra:
   version: v0.1.0-beta
   social:
