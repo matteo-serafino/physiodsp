@@ -34,16 +34,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-test.txt
-      - name: Run tests with pytest
-        run: pytest tests/ -v --tb=short
       - name: Generate coverage report
         run: |
           coverage run -m pytest
-          coverage xml -o ./coverage.xml
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false

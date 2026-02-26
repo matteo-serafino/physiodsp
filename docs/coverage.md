@@ -1,0 +1,3 @@
+# Coverage Report
+
+::: coverage

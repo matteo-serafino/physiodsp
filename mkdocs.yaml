@@ -6,6 +6,7 @@ edit_uri: edit/main/docs/
 nav:
   - Home: index.md
   - About: about.md
+  - Coverage: coverage.md
   - Algorithms:
       - Activity Algorithms:
           - ENMO: algorithms/enmo.md
@@ -31,6 +32,7 @@ theme:
 plugins:
   - search:
       lang: en
+  - coverage
 extra:
   version: v0.1.0-beta
   social:
