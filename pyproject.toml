@@ -7,9 +7,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "physiodsp"
-version = "0.1.0-beta"
 description = "A comprehensive Python library for processing and analyzing physiological sensor data"
-readme = "README.md"
+dynamic = ["readme", "version"]
 requires-python = ">=3.11"
 authors = [
     {name = "Matteo Serafino", email = "example@gmail.com"}
@@ -40,6 +39,10 @@ dependencies = [
 
 [tool.setuptools]
 packages = ["physiodsp"]
+
+[tool.setuptools.dynamic]
+readme = {file = "README.md", content-type="text/markdown"}
+version = {attr = "physiodsp._version.__version__"}
 
 [tool.setuptools.package-data]
 physiodsp = ["py.typed"]
