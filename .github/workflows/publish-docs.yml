@@ -24,5 +24,13 @@ jobs:
           path: ~/.cache 
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material 
-      - run: mkdocs gh-deploy --force
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+      - name: Generate coverage report
+        run: |
+          coverage run -m pytest
+          coverage html
+      - name: Deploy docs
+        run: mkdocs gh-deploy --force

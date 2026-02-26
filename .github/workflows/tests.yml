@@ -39,11 +39,4 @@ jobs:
       - name: Generate coverage report
         run: |
           coverage run -m pytest
-          coverage xml -o ./coverage.xml
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+          coverage report -m
