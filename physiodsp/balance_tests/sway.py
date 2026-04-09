@@ -7,12 +7,12 @@ from physiodsp.base import BaseAlgorithm
 from physiodsp.sensors.imu.accelerometer import AccelerometerData
 
 CHI_SQUARED = 4.605
-ROUND_DIGITS = 2
+ROUND_DIGITS = 6
 
 
 class SwaySettings(BaseModel):
 
-    filter_order: PositiveInt = Field(default=4, description="Butterworth filter order for bandpass filtering")
+    filter_order: PositiveInt = Field(default=4, description="Butterworth filter order for low-pass filtering")
 
     filter_high_freq: PositiveFloat = Field(default=2.5, description="Cutoff frequency in Hz")
 
@@ -60,6 +60,8 @@ class Sway(BaseAlgorithm):
         metrics_df = self.__index_extraction(ml_disp_no_mean, ap_disp_no_mean, accelerometer.fs)
 
         ellipse_metrics_df = self.__get_ellipse_area(ml_disp_no_mean, ap_disp_no_mean)
+
+        metrics_df = metrics_df.join(ellipse_metrics_df)
 
         metrics_df.insert(1, "timestamp_start", accelerometer.timestamps[0])
         metrics_df.insert(2, "timestamp_end", accelerometer.timestamps[-1])
@@ -134,7 +136,7 @@ class Sway(BaseAlgorithm):
 
         metrics = {
             "ellipse_area_m2": [ellipse_area],
-            "theta_deg": [theta],
+            "theta_rad": [theta],
             "a_m": [a],
             "b_m": [b]
         }

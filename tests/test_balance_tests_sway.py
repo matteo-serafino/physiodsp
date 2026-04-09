@@ -35,4 +35,10 @@ def test_balance_test_sway(fs):
     processor = Sway().run(accelerometer=accelerometer, sensor_height=1.4)
 
     metrics = processor.biomarker
+
     assert metrics is not None
+    assert hasattr(metrics, "shape")
+    assert hasattr(metrics, "columns")
+    assert hasattr(metrics, "empty")
+    assert not metrics.empty
+    assert metrics.shape[0] == 3
