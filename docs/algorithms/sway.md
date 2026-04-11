@@ -14,7 +14,7 @@ $$d_{ML} = x \cdot h, \quad d_{AP} = z \cdot h$$
 2. **Low-pass filtering**: A zero-phase Butterworth filter removes high-frequency noise above the cutoff frequency (default 2.5 Hz).
 3. **Mean removal**: The mean of each filtered signal is subtracted to center the trajectory around zero.
 4. **Sway index extraction**: Path-based stabilometric indices are computed for the full resultant path, the ML path, and the AP path.
-5. **Confidence ellipse**: A 95% confidence ellipse is fitted to the ML–AP scatter using eigenvalue decomposition of the covariance matrix.
+5. **Confidence ellipse**: A 95% confidence ellipse is fitted to the ML–AP scatter using eigenvalue decomposition of the covariance matrix; for this symmetric covariance matrix, this is equivalent to using SVD.
 
 ## Parameters
 
