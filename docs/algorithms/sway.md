@@ -9,8 +9,9 @@ The Sway algorithm quantifies postural sway from accelerometer data during balan
 
 ## Algorithm Description
 
-1. **Displacement estimation**: ML and AP displacements (in meters) are approximated by multiplying the accelerometer signal by the sensor height:
+1. **Displacement estimation**: ML and AP displacements (in meters) are approximated by multiplying the accelerometer signal by the sensor height using a small-angle approximation. The accelerometer axes must be expressed in **g** (gravitational units, where 1 g ≈ 9.81 m/s²); under a small-angle tilt, the horizontal component equals approximately the tilt angle in radians, so that:
 $$d_{ML} = x \cdot h, \quad d_{AP} = z \cdot h$$
+where $x$ and $z$ are in g and $h$ is the sensor height in meters. If raw sensor values are in m/s², divide by 9.81 before passing them to the algorithm.
 2. **Low-pass filtering**: A zero-phase Butterworth filter removes high-frequency noise above the cutoff frequency (default 2.5 Hz).
 3. **Mean removal**: The mean of each filtered signal is subtracted to center the trajectory around zero.
 4. **Sway index extraction**: Path-based stabilometric indices are computed for the full resultant path, the ML path, and the AP path.
@@ -40,9 +41,9 @@ n = len(timestamps)
 
 accel_data = AccelerometerData(
     timestamps=timestamps,
-    x=np.random.normal(0, 0.01, n),   # ML axis
-    y=np.random.normal(9.81, 0.01, n), # vertical axis
-    z=np.random.normal(0, 0.01, n),   # AP axis
+    x=np.random.normal(0, 0.01, n),   # ML axis (g)
+    y=np.random.normal(1.0, 0.01, n), # vertical axis (g, ≈ 1 g at rest)
+    z=np.random.normal(0, 0.01, n),   # AP axis (g)
     fs=fs
 )
 
