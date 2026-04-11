@@ -16,7 +16,7 @@ class ENMO(BaseAlgorithm):
     """Euclidean Norm Minus One"""
 
     _algorithm_name = "ENMO"
-    _version = "v0.1.0"
+    _version = "0.1.0"
 
     def __init__(self,
                  settings: ENMOSettings = ENMOSettings()
@@ -27,13 +27,16 @@ class ENMO(BaseAlgorithm):
         return None
 
     def run(self, accelerometer: AccelerometerData):
-        """_summary_
+        """Run the ENMO algorithm on accelerometer data.
+        ENMO is calculated as the vector magnitude of the three accelerometer
+        axes minus 1g, with negative values set to zero. The algorithm computes
+        the average ENMO over non-overlapping windows of a specified length.
 
         Args:
-            accelerometer (AccelerometerData): _description_
+            accelerometer (AccelerometerData): Triaxial accelerometer data.
 
         Returns:
-            ENMO: _description_
+            ENMO: Instance of the ENMO algorithm with computed values.
         """
 
         enmo = accelerometer.magnitude - 1

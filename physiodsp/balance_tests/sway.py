@@ -20,7 +20,7 @@ class SwaySettings(BaseModel):
 class Sway(BaseAlgorithm):
 
     _algorithm_name = "Sway"
-    _version = "v0.1.0"
+    _version = "0.1.0"
 
     def __init__(self, settings: SwaySettings = SwaySettings()) -> None:
         self.settings = settings

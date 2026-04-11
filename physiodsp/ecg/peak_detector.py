@@ -20,7 +20,7 @@ from physiodsp.dsp.convolution import mov_mean
 class EcgPeakDetector(BaseAlgorithm):
 
     _algorithm_name = "EcgPeakDetector"
-    _version = "v0.1.0"
+    _version = "0.1.0"
 
     FILTER_ORDER: int = 3
     LOWER_F_CUT: int = 5

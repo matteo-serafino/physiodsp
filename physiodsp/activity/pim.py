@@ -9,7 +9,7 @@ class PIMAlgorithm(BaseAlgorithm):
     """Proportional Integration Mode"""
 
     _algorithm_name = "PIMAlgorithm"
-    _version = 'v0.1.0'
+    _version = "0.1.0"
     _aggregation_window = 5
 
     def __init__(self) -> None:
