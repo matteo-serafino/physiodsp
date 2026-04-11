@@ -17,6 +17,8 @@ nav:
       - Cardiac Algorithms:
           - ECG Peak Detection: algorithms/ecg_peak_detection.md
           - HRV Score: algorithms/hrv_score.md
+      - Balance Tests:
+          - Sway: algorithms/sway.md
 theme:
   name: material
   palette:
