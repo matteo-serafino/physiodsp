@@ -94,9 +94,9 @@ The algorithm returns a Pandas DataFrame (`biomarker`) with the following column
 
 A zero-phase (forward–backward) Butterworth filter is applied to remove high-frequency noise while preserving the low-frequency sway motion:
 
-$$H(s) = \frac{1}{1 + (s / \omega_c)^{2N}}$$
+$$|H(j\omega)|^2 = \frac{1}{1 + (\omega / \omega_c)^{2N}}$$
 
-where $N$ is the filter order and $\omega_c = 2\pi \cdot f_c$.
+where $N$ is the filter order, $\omega$ is the angular frequency, and $\omega_c = 2\pi \cdot f_c$ is the cutoff angular frequency.
 
 ### 95% Confidence Ellipse
 
