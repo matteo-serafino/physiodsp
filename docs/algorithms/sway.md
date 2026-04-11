@@ -79,7 +79,9 @@ The algorithm returns a Pandas DataFrame (`biomarker`) with the following column
 | `total_distance_m` | m | Total path length traveled |
 | `average_velocity_m_s` | m/s | Mean sway velocity (total distance / duration) |
 
-### Ellipse columns (one row per recording)
+### Ellipse columns (`full_path` row only)
+
+These columns are populated **only for the `full_path` row**. The `ml_path` and `ap_path` rows contain `NaN` for all ellipse columns, because the confidence ellipse requires both ML and AP signals jointly.
 
 | Column | Unit | Description |
 |---|---|---|
