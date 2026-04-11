@@ -4,7 +4,7 @@ from numpy import (
     convolve,
     diff,
     mean,
-    round_
+    round
 )
 from scipy.signal import (
     butter,
@@ -69,9 +69,9 @@ class EcgPeakDetector(BaseAlgorithm):
 
         rr = {
             "timestamps": ecg.timestamps[locs[1:]],
-            "inter_beat_interval": round_(1000 * diff(locs) / ecg.fs)
+            "inter_beat_interval": round(1000 * diff(locs) / ecg.fs)
         }
-        rr['heart_rate'] = round_(60000 / rr['inter_beat_interval'])
+        rr['heart_rate'] = round(60000 / rr['inter_beat_interval'])
 
         self.biomarker = DataFrame(rr)
 
