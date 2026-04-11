@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 2026-04-12
+
+### Added
+
+#### Balance Tests
+- **Sway**: Postural sway analysis from accelerometer data during balance tests
+  - Medio-lateral (ML) displacement derived from the X axis, antero-posterior (AP) from the Z axis
+  - Small-angle approximation: displacement = acceleration × sensor height
+  - Zero-phase Butterworth low-pass filtering (default: order 4, cutoff 2.5 Hz)
+  - Mean-centred displacement signals for bias removal
+  - Stabilometric indices for full path, ML path, and AP path:
+    - Average distance, RMS distance, total path length, average velocity
+  - 95% confidence ellipse via SVD of the ML–AP covariance matrix (area, angle, semi-axes)
+  - `SwaySettings`: configurable filter order and cutoff frequency
+  - Unit tests in `test_balance_tests_sway.py`
+  - Algorithm documentation added in `docs/algorithms/sway.md`
+  - MkDocs navigation updated with a new *Balance Tests* section
+
+### Changed
+
+#### Apply semantic versioning
+- Apply semantic versioning to all the algorithms
+
+---
+
 ## [0.1.0-beta] - 2026-02-21
 
 ### Added
