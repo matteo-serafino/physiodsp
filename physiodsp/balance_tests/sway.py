@@ -136,7 +136,7 @@ class Sway(BaseAlgorithm):
             DataFrame: Table of ellipse metrics (area, angle, semi-major axis, semi-minor axis).
         """
 
-        m = np.matrix([ml, ap])
+        m = np.vstack((ml, ap))
 
         sigma = np.cov(m)
 
