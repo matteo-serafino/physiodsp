@@ -235,7 +235,7 @@ def test_activity_score_algorithm_properties():
     algorithm = ActivityScore()
 
     assert algorithm.algorithm_name == "ActivityScore"
-    assert algorithm.version == "v0.1.0"
+    assert algorithm.version == "0.1.0"
 
     default_settings = ActivityScoreSettings()
     assert default_settings.baseline_window_days == 30
