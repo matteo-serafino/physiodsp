@@ -27,14 +27,27 @@ class Sway(BaseAlgorithm):
         return None
 
     def run(self, accelerometer: AccelerometerData, sensor_height: float):
-        """_summary_
+        """Run the sway analysis on accelerometer data recorded during a balance test.
+
+        Medio-lateral (ML) displacement is estimated from the X axis of the accelerometer,
+        while antero-posterior (AP) displacement is estimated from the Z axis. Both
+        displacements are approximated by multiplying the respective axis signal by the
+        sensor height (small-angle approximation). The signals are then low-pass filtered,
+        mean-centred, and used to extract stabilometric indices and a 95% confidence ellipse.
 
         Args:
-            accelerometer (AccelerometerData): _description_
-            sensor_height (float): Sensor height in meters
+            accelerometer (AccelerometerData): Triaxial accelerometer data. The X axis must
+                be aligned with the medio-lateral direction and the Z axis with the
+                antero-posterior direction.
+            sensor_height (float): Height of the sensor above the ground in meters, used to
+                convert acceleration to linear displacement.
 
         Returns:
-            _type_: _description_
+            Sway: The instance itself with the `biomarker` attribute set to a DataFrame
+                containing stabilometric indices (average distance, RMS distance, total
+                distance, average velocity) for the full, ML, and AP paths, joined with
+                the 95% confidence ellipse metrics (area, angle, semi-major and semi-minor
+                axes), and metadata columns (timestamp_start, timestamp_end, duration_s).
         """
 
         # Medio-lateral and Antero-posterior displacements in meters
