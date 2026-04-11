@@ -119,7 +119,7 @@ def test_pim_algorithm_properties():
     """Test basic properties of PIM algorithm"""
     pim = PIMAlgorithm()
     assert pim.algorithm_name == "PIMAlgorithm"
-    assert pim.version == "v0.1.0"
+    assert pim.version == "0.1.0"
     assert hasattr(pim, '_aggregation_window')
     assert pim._aggregation_window == 5
 
