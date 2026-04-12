@@ -6,7 +6,7 @@ from scipy.signal import butter, sosfiltfilt
 from physiodsp.base import BaseAlgorithm
 from physiodsp.sensors.imu.accelerometer import AccelerometerData
 
-CHI_SQUARED = 4.605
+CHI_SQUARED = 5.991465  # 95% chi-square quantile for 2 degrees of freedom
 ROUND_DIGITS = 6
 
 
