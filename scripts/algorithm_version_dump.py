@@ -4,6 +4,7 @@ from physiodsp.activity.zero_crossing import ZeroCrossing
 from physiodsp.activity.pim import PIMAlgorithm
 from physiodsp.ecg.peak_detector import EcgPeakDetector
 from physiodsp.hrv.hrv_score import HrvScore
+from physiodsp.balance_tests.sway import Sway
 
 
 def main():
@@ -16,6 +17,7 @@ def main():
     print(f"| {PIMAlgorithm().algorithm_name} | {PIMAlgorithm().version} |")
     print(f"| {EcgPeakDetector().algorithm_name} | {EcgPeakDetector().version} |")
     print(f"| {HrvScore().algorithm_name} | {HrvScore().version} |")
+    print(f"| {Sway().algorithm_name} | {Sway().version} |")
 
 
 if __name__ == "__main__":
