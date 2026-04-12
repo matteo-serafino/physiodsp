@@ -5,7 +5,7 @@
 The PIM (Proportional Integration Mode) Algorithm processes 3-axis IMU (Inertial Measurement Unit) data to extract activity metrics. It computes the absolute values of acceleration on each axis and aggregates them over time windows.
 
 **Algorithm Name:** PIMAlgorithm  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 

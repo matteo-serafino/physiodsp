@@ -5,7 +5,7 @@
 The HRV Score Algorithm computes a normalized 0-100 Heart Rate Variability score based on RMSSD (Root Mean Square of Successive Differences) values. It incorporates trend analysis and stability metrics to provide a comprehensive HRV assessment.
 
 **Algorithm Name:** HrvScoreAlgorithm  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 

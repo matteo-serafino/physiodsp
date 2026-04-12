@@ -5,7 +5,7 @@
 The Sway algorithm quantifies postural sway from accelerometer data during balance tests. It computes center-of-pressure-proxy displacement signals in the medio-lateral (ML) and antero-posterior (AP) directions and extracts a set of stabilometric indices and a 95% confidence ellipse.
 
 **Algorithm Name:** Sway  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 
