@@ -5,7 +5,7 @@
 The Time Above Threshold algorithm measures the duration and frequency of periods when acceleration exceeds a specified threshold. This metric is useful for identifying active periods and activity intensity levels from accelerometer data.
 
 **Algorithm Name:** TimeAboveThrAlgorithm  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 

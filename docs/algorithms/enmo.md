@@ -5,7 +5,7 @@
 ENMO is a physical activity metric derived from accelerometer data. It represents the Euclidean norm of the acceleration vector minus 1g (gravitational acceleration), with negative values clipped to zero.
 
 **Algorithm Name:** ENMO  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 

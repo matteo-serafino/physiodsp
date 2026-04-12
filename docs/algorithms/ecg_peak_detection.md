@@ -5,7 +5,7 @@
 The ECG Peak Detector is a QRS complex detection algorithm that identifies R-peaks in electrocardiogram signals. It automatically extracts heart rate and inter-beat intervals from raw ECG data.
 
 **Algorithm Name:** EcgPeakDetector  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 

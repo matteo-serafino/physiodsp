@@ -5,7 +5,7 @@
 The Activity Score Algorithm provides a personalized 0-100 daily activity and recovery score based on steps, sleep, training, and resting metrics. It uses individual baseline data to personalize scoring, accounting for natural variations in activity levels and sleep patterns across different users.
 
 **Algorithm Name:** ActivityScore  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 

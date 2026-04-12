@@ -172,7 +172,7 @@ def test_time_above_thr_algorithm_properties():
 
     # Check algorithm metadata
     assert tat.algorithm_name == "TimeAboveThrAlgorithm"
-    assert tat.version == "v0.1.0"
+    assert tat.version == "0.1.0"
 
     # Check default settings
     default_settings = TimeAboveThrSettings()

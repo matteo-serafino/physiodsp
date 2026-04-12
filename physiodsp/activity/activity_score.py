@@ -56,7 +56,7 @@ class ActivityScore(BaseAlgorithm):
     """
 
     _algorithm_name = "ActivityScore"
-    _version = "v0.1.0"
+    _version = "0.1.0"
 
     def __init__(self, settings: ActivityScoreSettings = ActivityScoreSettings()) -> None:
         self.settings = settings

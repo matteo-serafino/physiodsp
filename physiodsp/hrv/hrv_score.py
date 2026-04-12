@@ -19,7 +19,7 @@ class HrvScore(BaseAlgorithm):
     """HRV Score Algorithm"""
 
     _algorithm_name = "HrvScoreAlgorithm"
-    _version = "v0.1.0"
+    _version = "0.1.0"
 
     def __init__(self, settings: HrvScoreSettings = HrvScoreSettings()) -> None:
         self.settings = settings

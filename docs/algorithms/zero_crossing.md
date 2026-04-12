@@ -5,7 +5,7 @@
 The Zero Crossing algorithm detects activity by counting the number of times the acceleration signal crosses zero within a specified threshold. This metric is useful for identifying movement patterns and activity intensity from accelerometer data.
 
 **Algorithm Name:** ZeroCrossingAlgorithm  
-**Version:** v0.1.0
+**Version:** 0.1.0
 
 ## Algorithm Description
 

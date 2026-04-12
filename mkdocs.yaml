@@ -17,6 +17,8 @@ nav:
       - Cardiac Algorithms:
           - ECG Peak Detection: algorithms/ecg_peak_detection.md
           - HRV Score: algorithms/hrv_score.md
+      - Balance Tests:
+          - Sway: algorithms/sway.md
 theme:
   name: material
   palette:
@@ -34,7 +36,7 @@ plugins:
       lang: en
   - coverage
 extra:
-  version: v0.1.0-beta
+  version: 0.1.0
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/matteo-serafino/physiodsp

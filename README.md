@@ -7,6 +7,7 @@ A comprehensive Python library for processing and analyzing physiological sensor
 - **Activity Analysis**: ENMO (Euclidean Norm Minus One), personalized Activity Score, activity intensity detection, energy expenditure estimation *(coming soon)*
 - **ECG Processing**: QRS peak detection, heart rate calculation, inter-beat interval analysis  
 - **HRV Scoring**: Advanced heart rate variability scoring with trend analysis and stability metrics
+- **Balance Tests**: Postural sway analysis with stabilometric indices and 95% confidence ellipse
 - **Sleep Analysis**: Sleep quality and duration metrics *(coming soon)*
 - **Sensor Support**: Accelerometer, gyroscope, magnetometer, and ECG data processing
 - **Digital Signal Processing**: Convolution and filtering utilities for physiological signals
@@ -74,6 +75,29 @@ result = detector.run(ecg_data)
 print(result.biomarker)  # DataFrame with RR intervals and heart rate
 ```
 
+### Balance Test - Sway
+
+```python
+from physiodsp.balance_tests.sway import Sway, SwaySettings
+from physiodsp.sensors.imu.accelerometer import AccelerometerData
+
+# Create accelerometer data (X = medio-lateral, Z = antero-posterior)
+accel_data = AccelerometerData(
+    timestamps=timestamps,
+    x=x_values,  # medio-lateral axis
+    y=y_values,  # vertical axis
+    z=z_values,  # antero-posterior axis
+    fs=50  # 50 Hz sampling frequency
+)
+
+# Initialize and run sway algorithm
+sway = Sway(settings=SwaySettings(filter_order=4, filter_high_freq=2.5))
+result = sway.run(accel_data, sensor_height=1.0)  # sensor height in meters
+
+# Get stabilometric indices and ellipse metrics
+print(result.biomarker)
+```
+
 ### HRV Scoring
 
 ```python
@@ -119,6 +143,9 @@ print(result.biomarker_agg)  # DataFrame with HRV score
 
 ### `hrv/`
 - **HRV Score**: Comprehensive 0-100 HRV scoring with trend and stability analysis
+
+### `balance_tests/`
+- **Sway** ✅ (unit tested): Postural sway analysis — stabilometric indices (average distance, RMS, total path, velocity) for the full, ML, and AP paths, plus 95% confidence ellipse metrics
 
 ### `dsp/`
 - **Convolution**: Signal processing utilities including moving averages

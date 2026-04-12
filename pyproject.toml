@@ -37,8 +37,9 @@ dependencies = [
 "Repository" = "https://github.com/matteo-serafino/physiodsp"
 "Issues" = "https://github.com/matteo-serafino/physiodsp"
 
-[tool.setuptools]
-packages = ["physiodsp"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["physiodsp*"]
 
 [tool.setuptools.dynamic]
 readme = {file = "README.md", content-type="text/markdown"}

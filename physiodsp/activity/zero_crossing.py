@@ -26,7 +26,7 @@ class ZeroCrossing(BaseAlgorithm):
     """Zero Crossing Algorithm"""
 
     _algorithm_name = "ZeroCrossingAlgorithm"
-    _version = "v0.1.0"
+    _version = "0.1.0"
 
     def __init__(self,
                  settings: ZeroCrossingSettings = ZeroCrossingSettings(),
