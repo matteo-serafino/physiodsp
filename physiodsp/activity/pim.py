@@ -12,11 +12,7 @@ class PIMAlgorithm(BaseAlgorithm):
     _version = "0.1.0"
     _aggregation_window = 5
 
-    def __init__(self) -> None:
-
-        return None
-
-    def estimate(self, data: IMUData):
+    def run(self, data: IMUData):
 
         self.values_x = abs(data.x)
         self.values_y = abs(data.y)
@@ -28,13 +24,14 @@ class PIMAlgorithm(BaseAlgorithm):
                   method: str = 'sum'
                   ):
 
-        df = DataFrame(
-            list(zip(self.data.timestamps, self.values_x, self.values_y, self.values_z)),
-            columns=['timestamps', 'x', 'y', 'z']
-        )
+        df = DataFrame({
+            'timestamps': self.data.timestamps,
+            'x': self.values_x,
+            'y': self.values_y,
+            'z': self.values_z
+        })
 
-        df['timestamps'] = df[
-            'timestamps'].apply(lambda x: x // self.aggregation_window)
+        df['timestamps'] = df['timestamps'] // self.aggregation_window
 
         df_agg = df.groupby('timestamps')[["x", "y", "z"]].agg(method).reset_index(drop=False)
 
