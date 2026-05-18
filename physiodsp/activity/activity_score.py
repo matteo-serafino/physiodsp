@@ -284,9 +284,19 @@ class ActivityScore(BaseAlgorithm):
             'baseline_days_used': window_size
         }
 
-        self.biomarker_agg = DataFrame([score_record])
-        self.daily_scores = self.biomarker_agg.copy()
+        self.biomarker = DataFrame([score_record])
+        self.daily_scores = self.biomarker.copy()
 
+        return self
+
+    def aggregate(self,
+                  method: str = 'mean'
+                  ):
+        """
+        Activity Score is already daily aggregated.
+        Simply move biomarker to biomarker_agg.
+        """
+        self.biomarker_agg = self.biomarker.copy()
         return self
 
     def get_activity_score_interpretation(self, activity_score: float) -> str:
