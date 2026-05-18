@@ -26,7 +26,7 @@ class BaseAlgorithm(ABC):
 
     @property
     def window_len(self) -> int:
-        """Window lenght in seconds"""
+        """Window length in seconds"""
         return self._window_len
 
     @property
@@ -34,25 +34,22 @@ class BaseAlgorithm(ABC):
         """Aggregation Window in seconds"""
         return self._aggregation_window
 
-    @classmethod
     def preprocess(self):
         raise NotImplementedError
 
-    @classmethod
     def run(self):
         raise NotImplementedError
 
-    @classmethod
     def aggregate(self,
                   timestamps: ndarray,
                   values: ndarray,
                   method: str = 'mean'
                   ):
 
-        df = DataFrame(
-            list(zip(timestamps, values)),
-            columns=['timestamps', 'values']
-        )
+        df = DataFrame({
+            'timestamps': timestamps,
+            'values': values
+        })
 
         df['timestamps'] = df[
             'timestamps'].apply(lambda x: (x // self._aggregation_window) * self._aggregation_window)
