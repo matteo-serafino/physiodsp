@@ -13,7 +13,7 @@ class ZeroCrossingSettings(BaseModel):
 
     aggregation_window: PositiveInt = Field(default=60, description="aggregation window length in seconds")
 
-    zero_crossing_thr: PositiveFloat = Field(default=0.05, description="ero crossing threshold in g")
+    zero_crossing_thr: PositiveFloat = Field(default=0.05, description="zero crossing threshold in g")
 
     filter_order: PositiveInt = Field(default=4, description="Butterworth filter order for bandpass filtering")
 
@@ -93,8 +93,7 @@ class ZeroCrossing(BaseAlgorithm):
 
         df = self.values.copy()
 
-        df['timestamps'] = df[
-            'timestamps'].apply(lambda x: (x // self._aggregation_window) * self._aggregation_window)
+        df['timestamps'] = (df['timestamps'] // self.aggregation_window) * self.aggregation_window
 
         df_agg = df.groupby('timestamps')[["x", "y", "z"]].agg(method).reset_index(drop=False)
 
