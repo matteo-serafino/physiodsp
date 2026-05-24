@@ -93,8 +93,7 @@ class ZeroCrossing(BaseAlgorithm):
 
         df = self.values.copy()
 
-        df['timestamps'] = df[
-            'timestamps'].apply(lambda x: (x // self._aggregation_window) * self._aggregation_window)
+        df['timestamps'] = (df['timestamps'] // self.aggregation_window) * self.aggregation_window
 
         df_agg = df.groupby('timestamps')[["x", "y", "z"]].agg(method).reset_index(drop=False)
 
