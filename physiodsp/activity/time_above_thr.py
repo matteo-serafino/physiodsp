@@ -51,10 +51,9 @@ class TimeAboveThr(BaseAlgorithm):
 
         df = self.biomarker.copy()
 
-        df['timestamp'] = df[
-            'timestamps'].apply(lambda x: x // self._aggregation_window)
+        df['timestamps'] = (df['timestamps'] // self.aggregation_window) * self.aggregation_window
 
-        df_agg = df.groupby('timestamp')[["x", "y", "z"]].agg(method).reset_index(drop=False)
+        df_agg = df.groupby('timestamps')[["x", "y", "z"]].agg(method).reset_index(drop=False)
 
         self.biomarker_agg = df_agg
 
