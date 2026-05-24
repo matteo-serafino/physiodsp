@@ -32,7 +32,7 @@ def test_pim_algorithm(n_samples, fs):
         fs=fs
     )
     pim = PIMAlgorithm()
-    result = pim.estimate(imu_data)
+    result = pim.run(imu_data)
     assert hasattr(result, 'values_x')
     assert hasattr(result, 'values_y')
     assert hasattr(result, 'values_z')
@@ -61,7 +61,7 @@ def test_pim_absolute_values():
         fs=fs
     )
     pim = PIMAlgorithm()
-    result = pim.estimate(imu_data)
+    result = pim.run(imu_data)
     import numpy as np
     assert np.allclose(result.values_x, np.abs(x_data))
     assert np.allclose(result.values_y, np.abs(y_data))
@@ -85,7 +85,7 @@ def test_pim_positive_values():
         fs=fs
     )
     pim = PIMAlgorithm()
-    result = pim.estimate(imu_data)
+    result = pim.run(imu_data)
     import numpy as np
     assert np.allclose(result.values_x, x_data)
     assert np.allclose(result.values_y, y_data)
@@ -109,7 +109,7 @@ def test_pim_zero_values():
         fs=fs
     )
     pim = PIMAlgorithm()
-    result = pim.estimate(imu_data)
+    result = pim.run(imu_data)
     assert (result.values_x == 0).all()
     assert (result.values_y == 0).all()
     assert (result.values_z == 0).all()
@@ -137,7 +137,7 @@ def test_pim_estimate_returns_self():
         fs=32
     )
     pim = PIMAlgorithm()
-    result = pim.estimate(imu_data)
+    result = pim.run(imu_data)
     assert result is pim
 
 
@@ -161,7 +161,7 @@ def test_pim_data_preservation():
         fs=fs
     )
     pim = PIMAlgorithm()
-    pim.estimate(imu_data)
+    pim.run(imu_data)
     import numpy as np
     assert np.allclose(imu_data.x, x_copy)
     assert np.allclose(imu_data.y, y_copy)
@@ -185,7 +185,7 @@ def test_pim_mixed_values():
         fs=fs
     )
     pim = PIMAlgorithm()
-    result = pim.estimate(imu_data)
+    result = pim.run(imu_data)
     import numpy as np
     assert np.allclose(result.values_x, np.abs(x_data))
     assert np.allclose(result.values_y, np.abs(y_data))

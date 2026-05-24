@@ -31,7 +31,7 @@ class PIMAlgorithm(BaseAlgorithm):
             'z': self.values_z
         })
 
-        df['timestamps'] = df['timestamps'] // self.aggregation_window
+        df['timestamps'] = (df['timestamps'] // self.aggregation_window) * self.aggregation_window
 
         df_agg = df.groupby('timestamps')[["x", "y", "z"]].agg(method).reset_index(drop=False)
 
