@@ -36,7 +36,7 @@ class TimeAboveThr(BaseAlgorithm):
         # Add timestamp column
         above_thr = concatenate([data.timestamps.reshape(-1, 1), above_thr], axis=1)
 
-        self.values = DataFrame({"timestamps": above_thr[:, 0], "x": above_thr[:, 1], "y": above_thr[:, 2], "z": above_thr[:, 3]}).rolling(
+        self.biomarker = DataFrame({"timestamps": above_thr[:, 0], "x": above_thr[:, 1], "y": above_thr[:, 2], "z": above_thr[:, 3]}).rolling(
             window=int(self._window_len * data.fs),
             step=int(self._window_len * data.fs),
             min_periods=int(self._window_len * data.fs),
@@ -49,10 +49,7 @@ class TimeAboveThr(BaseAlgorithm):
                   method: str = 'sum'
                   ):
 
-        df = DataFrame(
-            list(zip(self.data.timestamps, self.values_x, self.values_y, self.values_z)),
-            columns=['timestamps', 'x', 'y', 'z']
-        )
+        df = self.biomarker.copy()
 
         df['timestamp'] = df[
             'timestamps'].apply(lambda x: x // self._aggregation_window)
