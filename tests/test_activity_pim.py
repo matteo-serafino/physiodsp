@@ -16,7 +16,7 @@ test_folder_path = os.path.dirname(os.path.realpath(__file__))
     [
         (128, 32),
         (256, 64),
-        (512, 100)
+        (600, 100)
     ]
 )
 def test_pim_algorithm(n_samples, fs):
