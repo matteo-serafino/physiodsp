@@ -36,7 +36,7 @@ def test_activity_time_above_thr(n_samples, fs, threshold):
     )
 
     tat_processor = TimeAboveThr(settings=TimeAboveThrSettings(threshold=threshold)).run(imu_data)
-    tat_1s = tat_processor.values
+    tat_1s = tat_processor.biomarker
 
     # Check output structure
     assert "timestamps" in tat_1s.columns
@@ -78,7 +78,7 @@ def test_time_above_thr_all_above_threshold():
     )
 
     tat_processor = TimeAboveThr(settings=TimeAboveThrSettings(threshold=threshold)).run(imu_data)
-    tat_1s = tat_processor.values
+    tat_1s = tat_processor.biomarker
 
     # All samples should be above threshold
     # With 1s windows at 32 Hz, each window should have 32 samples above threshold
@@ -111,7 +111,7 @@ def test_time_above_thr_all_below_threshold():
     )
 
     tat_processor = TimeAboveThr(settings=TimeAboveThrSettings(threshold=threshold)).run(imu_data)
-    tat_1s = tat_processor.values
+    tat_1s = tat_processor.biomarker
 
     # No samples should be above threshold
     assert (tat_1s["x"] == 0).all()
@@ -148,7 +148,7 @@ def test_time_above_thr_custom_settings():
     )
 
     tat_processor = TimeAboveThr(settings=settings).run(imu_data)
-    tat_results = tat_processor.values
+    tat_results = tat_processor.biomarker
 
     # Check that output is generated
     assert len(tat_results) > 0
@@ -203,11 +203,11 @@ def test_time_above_thr_output_structure():
     tat_processor = TimeAboveThr().run(imu_data)
 
     # Check that values attribute exists
-    assert hasattr(tat_processor, 'values')
-    assert tat_processor.values is not None
+    assert hasattr(tat_processor, 'biomarker')
+    assert tat_processor.biomarker is not None
 
     # Check column data types
-    assert tat_processor.values["timestamps"].dtype in ['float64', 'float32']
-    assert tat_processor.values["x"].dtype in ['int64', 'int32', 'float64', 'float32']
-    assert tat_processor.values["y"].dtype in ['int64', 'int32', 'float64', 'float32']
-    assert tat_processor.values["z"].dtype in ['int64', 'int32', 'float64', 'float32']
+    assert tat_processor.biomarker["timestamps"].dtype in ['float64', 'float32']
+    assert tat_processor.biomarker["x"].dtype in ['int64', 'int32', 'float64', 'float32']
+    assert tat_processor.biomarker["y"].dtype in ['int64', 'int32', 'float64', 'float32']
+    assert tat_processor.biomarker["z"].dtype in ['int64', 'int32', 'float64', 'float32']

@@ -44,7 +44,7 @@ def test_activity_score_excellent(baseline_window_days):
     })
 
     result = algorithm.run(all_data)
-    score = result.biomarker_agg.iloc[0]['activity_score']
+    score = result.biomarker.iloc[0]['activity_score']
 
     assert score >= 85, f"Expected excellent score (>=85), got {score}"
     assert algorithm.get_activity_score_interpretation(score) == "Excellent - Outstanding activity and recovery balance"
@@ -89,7 +89,7 @@ def test_activity_score_good(baseline_window_days):
     })
 
     result = algorithm.run(all_data)
-    score = result.biomarker_agg.iloc[0]['activity_score']
+    score = result.biomarker.iloc[0]['activity_score']
 
     assert 70 <= score < 85, f"Expected good score (70-84), got {score}"
     assert algorithm.get_activity_score_interpretation(score) == "Good - Healthy activity levels with adequate recovery"
@@ -134,7 +134,7 @@ def test_activity_score_fair(baseline_window_days):
     })
 
     result = algorithm.run(all_data)
-    score = result.biomarker_agg.iloc[0]['activity_score']
+    score = result.biomarker.iloc[0]['activity_score']
 
     assert 50 <= score < 70, f"Expected fair score (50-69), got {score}"
     assert algorithm.get_activity_score_interpretation(score) == "Fair - Room for improvement in activity or recovery"
@@ -179,7 +179,7 @@ def test_activity_score_poor(baseline_window_days):
     })
 
     result = algorithm.run(all_data)
-    score = result.biomarker_agg.iloc[0]['activity_score']
+    score = result.biomarker.iloc[0]['activity_score']
 
     assert 30 <= score < 50, f"Expected poor score (30-49), got {score}"
     assert algorithm.get_activity_score_interpretation(score) == "Poor - Significant imbalance in activity or recovery"
@@ -224,7 +224,7 @@ def test_activity_score_critical(baseline_window_days):
     })
 
     result = algorithm.run(all_data)
-    score = result.biomarker_agg.iloc[0]['activity_score']
+    score = result.biomarker.iloc[0]['activity_score']
 
     assert score < 30, f"Expected critical score (<30), got {score}"
     assert algorithm.get_activity_score_interpretation(score) == "Critical - Urgent attention needed to activity and recovery"
@@ -291,8 +291,8 @@ def test_activity_score_personalizes_to_baseline():
     result_low = algorithm_low.run(low_baseline)
     result_high = algorithm_high.run(high_baseline)
 
-    score_low = result_low.biomarker_agg.iloc[0]['activity_score']
-    score_high = result_high.biomarker_agg.iloc[0]['activity_score']
+    score_low = result_low.biomarker.iloc[0]['activity_score']
+    score_high = result_high.biomarker.iloc[0]['activity_score']
 
     # Same current day should yield different scores based on baseline
     assert score_low != score_high
@@ -317,21 +317,21 @@ def test_activity_score_output_structure():
     result = algorithm.run(data)
 
     # Check biomarker structure
-    assert hasattr(result, 'biomarker_agg')
-    assert len(result.biomarker_agg) == 1
+    assert hasattr(result, 'biomarker')
+    assert len(result.biomarker) == 1
 
     # Check required columns
     required_cols = ['activity_score', 'step_score', 'sleep_score',
                      'training_score', 'resting_score', 'baseline_days_used']
     for col in required_cols:
-        assert col in result.biomarker_agg.columns
+        assert col in result.biomarker.columns
 
     # Check score ranges
-    assert 0 <= result.biomarker_agg.iloc[0]['activity_score'] <= 100
-    assert 0 <= result.biomarker_agg.iloc[0]['step_score'] <= 100
-    assert 0 <= result.biomarker_agg.iloc[0]['sleep_score'] <= 100
-    assert 0 <= result.biomarker_agg.iloc[0]['training_score'] <= 100
-    assert 0 <= result.biomarker_agg.iloc[0]['resting_score'] <= 100
+    assert 0 <= result.biomarker.iloc[0]['activity_score'] <= 100
+    assert 0 <= result.biomarker.iloc[0]['step_score'] <= 100
+    assert 0 <= result.biomarker.iloc[0]['sleep_score'] <= 100
+    assert 0 <= result.biomarker.iloc[0]['training_score'] <= 100
+    assert 0 <= result.biomarker.iloc[0]['resting_score'] <= 100
 
 
 def test_activity_score_weighted_combination():
@@ -354,7 +354,7 @@ def test_activity_score_weighted_combination():
     })
 
     result = algorithm.run(data)
-    score = result.biomarker_agg.iloc[0]
+    score = result.biomarker.iloc[0]
 
     # Manually calculate expected score
     expected_activity_score = (
