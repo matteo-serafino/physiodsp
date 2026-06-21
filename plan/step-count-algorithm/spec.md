@@ -1,4 +1,4 @@
-# Final Specification: Step Count Algorithm
+#Specification: Step Count Algorithm
 
 ## 1. Requirements
 
