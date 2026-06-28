@@ -247,14 +247,14 @@ class StepCount(BaseAlgorithm):
             bin_timestamps=bin_ts + t0,
         )
 
-        cumulative = np.cumsum(
-            np.histogram(relative_steps,
-                         bins=np.append(bin_ts, bin_ts[-1] + 1.0))[0]
-        )
+        step_count_per_bin = np.histogram(
+            relative_steps,
+            bins=np.append(bin_ts, bin_ts[-1] + 1.0),
+        )[0]
 
         self.biomarker = pd.DataFrame({
             "timestamps": bin_ts + t0,
-            "step_count": cumulative,
+            "step_count": step_count_per_bin,
             "cadence_spm": cadence_spm,
             "activity_state": activity_per_bin,
         })
