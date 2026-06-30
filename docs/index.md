@@ -33,7 +33,10 @@ Whether you're building a fitness tracker, health monitoring application, or con
 ### ⚙️ Configurable
 - Customizable algorithm parameters via settings classes
 - Flexible aggregation methods
-- Support for various data formats
+- Support for various data formats (.mat at the moment)
+
+### 🛠️ Data Utilities
+- **MAT Loader**: Simple utility to read `.mat` files and extract the first variable, simplifying the bridge between MATLAB and Python research workflows.
 
 ## Quick Start
 
@@ -46,23 +49,27 @@ pip install physiodsp
 ### Basic Usage
 
 ```python
+from physiodsp.io import read_mat
 from physiodsp.activity.enmo import ENMO, ENMOSettings
 from physiodsp.sensors.imu.accelerometer import AccelerometerData
 
-# Prepare your accelerometer data
+# 1. Load data from a .mat file
+data = read_mat("sensor_data.mat")
+
+# 2. Prepare sensor data object
 accel_data = AccelerometerData(
-    timestamps=timestamps,
-    x=x_values,
-    y=y_values,
-    z=z_values,
-    fs=64  # 64 Hz sampling frequency
+    timestamps=data['timestamps'],
+    x=data['x'],
+    y=data['y'],
+    z=data['z'],
+    fs=64
 )
 
-# Run ENMO algorithm
+# 3. Run algorithm
 enmo = ENMO(settings=ENMOSettings(window_len=1, aggregation_window=60))
 result = enmo.run(accel_data)
 
-# Access results
+# 4. Access results
 print(result.biomarker)  # Pandas DataFrame
 ```
 

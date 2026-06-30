@@ -33,15 +33,19 @@ pip install physiodsp
 ### Activity Analysis - ENMO
 
 ```python
+from physiodsp.io import read_mat
 from physiodsp.activity.enmo import ENMO, ENMOSettings
 from physiodsp.sensors.imu.accelerometer import AccelerometerData
 
+# Load data from .mat file
+data = read_mat("sensor_data.mat")
+
 # Create accelerometer data
 accel_data = AccelerometerData(
-    timestamps=timestamps,
-    x=x_values,
-    y=y_values,
-    z=z_values,
+    timestamps=data['timestamps'],
+    x=data['x'],
+    y=data['y'],
+    z=data['z'],
     fs=64  # 64 Hz sampling frequency
 )
 
@@ -146,6 +150,9 @@ print(result.biomarker_agg)  # DataFrame with HRV score
 
 ### `balance_tests/`
 - **Sway** ✅ (unit tested): Postural sway analysis — stabilometric indices (average distance, RMS, total path, velocity) for the full, ML, and AP paths, plus 95% confidence ellipse metrics
+
+### `io/`
+- **MAT Reader** ✅ (unit tested): Utility to load variables from MATLAB .mat files using `read_mat()`
 
 ### `dsp/`
 - **Convolution**: Signal processing utilities including moving averages
