@@ -89,3 +89,105 @@ print(result.biomarker.head()) # DataFrame with timestamps, cadence, and activit
 ### Technical References
 - **Classical DSP Approach**: The current implementation follows a deterministic pipeline for explainability and low-power deployment.
 - **ML Baseline**: The "stepcount" (OxWalk) self-supervised ML approach serves as the state-of-the-art benchmark for future upgrades (Target F1 $\approx 0.89$).
+
+---
+
+## 5. Implementation Notes & Change Log
+
+Changes to `physiodsp/activity/step_count.py` and
+`tests/test_activity_step_count.py`.
+
+### 5.1 Fixed `test_step_count_total_steps_consistency`
+
+The test asserted the old *cumulative* semantics:
+
+```python
+assert int(result.biomarker["step_count"].iloc[-1]) == result.total_steps
+```
+
+Since commit `46d133d "Remove cum steps"`, the `step_count` column is a
+**per-bin** count (steps in each 1 s bin), not a running total. The final bin
+therefore holds only that second's steps (e.g. `1`), not the grand total
+(`32`), so the assertion failed.
+
+The column still accounts for every surviving step, so the fix asserts the
+**sum** instead:
+
+```python
+assert int(result.biomarker["step_count"].sum()) == result.total_steps
+```
+
+### 5.2 Fixed walking underestimation
+
+**Symptom.** Step counts were systematically low during sustained walking. Pure
+synthetic sines were exact, but realistic / longer signals undercounted by
+~2–6 %.
+
+**Root cause.** The pipeline band-pass filtered **and** peak-detected each 2 s
+analysis window *in isolation*. Two boundary effects dropped real steps:
+
+1. **Filter edge transients** — `sosfiltfilt` distorts ~0.1–0.2 s at each end of
+   every 2 s segment, so a step landing near a window boundary could be lost.
+2. **Detector reset** — the adaptive-threshold peak detector restarted its state
+   at every window, so peaks straddling a boundary were mishandled.
+
+In addition, the integer window count (`len(vm_dynamic) // win_samples`)
+silently discarded the trailing partial window (< 2 s of samples).
+
+Measured on a 30 s, 1.6 Hz walk: continuous detection found **48/48** steps,
+while summing isolated per-window detections found only **45**.
+
+**Fix.** Detection is now **decoupled from the analysis window**:
+
+- **Stage 2–3 (per window)** only *classify* each window — motion gate (SMA),
+  periodicity (autocorrelation / PSD), and the smoothed cadence estimate.
+- **Stage 4 (per run)** groups consecutive locomotion windows into contiguous
+  sample-index *runs* via the new `group_locomotion_runs()` helper, then
+  band-pass filters and peak-detects **each run as one continuous signal**. The
+  final run is extended to the end of the recording so trailing remainder
+  samples are still searched.
+
+Per-step activity labels are mapped back from the window each step falls in.
+
+**Result.**
+
+| Scenario                              | Before        | After          |
+| ------------------------------------- | ------------- | -------------- |
+| Realistic gait 1.2–2.5 Hz (30 s)      | −2 to −6 %    | ≈ +2 to +3 %   |
+| Non-multiple durations (tail dropped) | −2.0 to −2.5 %| +2.0 to +2.5 % |
+| Pure sine (all speeds)                | exact         | exact          |
+
+The systematic undercount is gone; remaining error is small and no longer
+one-sided. All 72 tests pass and `flake8` is clean.
+
+### 5.3 On increasing the analysis window 2 s → 5 s
+
+Investigated and **not recommended as a default.** Now that detection runs over
+contiguous runs (not per window), the window only controls *classification*
+granularity, so a longer window no longer helps the boundary-loss problem it
+might once have masked.
+
+The cost of 5 s is concrete and one-sided in the **wrong** direction —
+over-counting of short, intermittent bouts, which is exactly the free-living
+ADL/rest false-positive case the spec prioritises:
+
+| Isolated walk bout (rest + walk + rest), 1.6 Hz | expected | 2 s | 5 s |
+| ----------------------------------------------- | -------- | --- | --- |
+| 2.0 s walk                                      | ~3       | 3   | 8   |
+| 3.0 s walk                                      | ~5       | 3   | 8   |
+| 6.0 s walk                                      | ~10      | 10  | 15  |
+
+Why: a sub-window walk makes the **entire** 5 s window classify as locomotion,
+so the surrounding rest is absorbed into the run. The adaptive RMS threshold
+(`threshold_factor * local_rms`) then collapses across those low-amplitude rest
+stretches, and noise crosses it → false steps. Steady-state walking is
+unaffected (2 s and 5 s give identical counts), so 5 s only adds risk.
+
+`analysis_window_s` remains a `StepCountSettings` field, so it can still be
+raised per-dataset when the input is known to be continuous gait. The default
+stays **2 s**.
+
+A cleaner future lever for slow-cadence periodicity robustness (the only real
+benefit of a longer window) would be an **absolute floor on the peak-detection
+threshold** so noise in absorbed rest regions can't cross it — independent of
+window length.

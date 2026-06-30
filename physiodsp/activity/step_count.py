@@ -134,14 +134,21 @@ class StepCount(BaseAlgorithm):
         window_activity: List[str] = []
         window_timestamps: List[float] = []
 
+        # --- Stage 2–3: classify every window (motion gate + periodicity) ---
+        # Detection is deferred to Stage 4 so that contiguous locomotion windows
+        # can be filtered and peak-picked as one continuous signal. Detecting
+        # each 2 s window in isolation drops steps at window boundaries
+        # (filter edge transients + per-window detector reset), which
+        # systematically underestimates the count during sustained walking.
+        window_is_loco: List[bool] = []
+        window_cadence_hz: List[float] = []
         prev_cadence_hz: float = 0.0
 
         for w in range(n_windows):
             s = w * win_samples
             e = s + win_samples
             seg = vm_dynamic[s:e]
-            t_win = t[s]
-            window_timestamps.append(t_win)
+            window_timestamps.append(t[s])
 
             # --- Stage 2: SMA gate ---
             sma = float(np.mean(np.abs(seg)))
@@ -156,42 +163,51 @@ class StepCount(BaseAlgorithm):
                 periodicity_threshold=cfg.periodicity_threshold,
                 spectral_purity_threshold=cfg.spectral_purity_threshold,
             )
-            window_activity.append(activity_state)
+
+            if is_loco:
+                if cadence_hz <= 0.0:
+                    cadence_hz = prev_cadence_hz * 0.9
+                if cadence_hz <= 0.0:
+                    # No usable cadence estimate: demote to rest.
+                    is_loco = False
+                    activity_state = "rest"
+                else:
+                    if prev_cadence_hz > 0.0:
+                        cadence_hz = 0.7 * prev_cadence_hz + 0.3 * cadence_hz
+                    prev_cadence_hz = cadence_hz
 
             if not is_loco:
                 prev_cadence_hz = 0.0
-                continue
 
-            if cadence_hz <= 0.0:
-                cadence_hz = prev_cadence_hz * 0.9
-            if cadence_hz <= 0.0:
-                window_activity[-1] = "rest"
-                continue
+            window_activity.append(activity_state)
+            window_is_loco.append(is_loco)
+            window_cadence_hz.append(cadence_hz if is_loco else 0.0)
 
-            if prev_cadence_hz > 0.0:
-                cadence_hz = 0.7 * prev_cadence_hz + 0.3 * cadence_hz
-            prev_cadence_hz = cadence_hz
-
-            # --- Stage 4: Adaptive band-pass + peak detection ---
+        # --- Stage 4: continuous detection over contiguous locomotion runs ---
+        for run_start, run_end, run_cadence_hz in group_locomotion_runs(
+            window_is_loco=window_is_loco,
+            window_cadence_hz=window_cadence_hz,
+            win_samples=win_samples,
+            n_samples=len(vm_dynamic),
+        ):
+            seg = vm_dynamic[run_start:run_end]
             bp_seg = adaptive_bandpass_filter(
-                seg, center_freq_hz=cadence_hz, fs=fs
+                seg, center_freq_hz=run_cadence_hz, fs=fs
             )
             peak_indices = detect_steps_in_window(
                 bp_signal=bp_seg,
                 fs=fs,
-                cadence_hz=cadence_hz,
+                cadence_hz=run_cadence_hz,
                 threshold_factor=cfg.threshold_factor,
             )
 
-            if not peak_indices:
-                continue
-
+            cadence_spm = run_cadence_hz * 60.0
             for idx in peak_indices:
-                abs_t = t[s + idx]
-                cadence_spm = cadence_hz * 60.0
-                all_step_times.append(float(abs_t))
+                abs_idx = run_start + idx
+                win_idx = min(abs_idx // win_samples, n_windows - 1)
+                all_step_times.append(float(t[abs_idx]))
                 all_step_cadences.append(cadence_spm)
-                all_step_activities.append(activity_state)
+                all_step_activities.append(window_activity[win_idx])
 
         # ----------------------------------------------------------------
         # Stage 5 — Post-processing
@@ -416,6 +432,41 @@ def is_locomotion_window(
             return True, psd_freq, activity
 
     return False, 0.0, "rest" if sma > sma_sleep_thr else "sleep"
+
+
+def group_locomotion_runs(
+    window_is_loco: List[bool],
+    window_cadence_hz: List[float],
+    win_samples: int,
+    n_samples: int,
+) -> List[Tuple[int, int, float]]:
+    """Group consecutive locomotion windows into continuous sample-index runs.
+
+    Returns a list of ``(start_sample, end_sample, mean_cadence_hz)`` tuples,
+    one per contiguous block of locomotion windows. Detecting steps over these
+    runs (rather than per fixed window) avoids losing steps to filter edge
+    effects and detector resets at every 2 s boundary.
+
+    The final run is extended to ``n_samples`` so the trailing remainder
+    samples that the integer window count drops are still searched for steps.
+    """
+    runs: List[Tuple[int, int, float]] = []
+    n_windows = len(window_is_loco)
+    i = 0
+    while i < n_windows:
+        if not window_is_loco[i]:
+            i += 1
+            continue
+        j = i
+        cadences: List[float] = []
+        while j < n_windows and window_is_loco[j]:
+            cadences.append(window_cadence_hz[j])
+            j += 1
+        start = i * win_samples
+        end = n_samples if j == n_windows else j * win_samples
+        runs.append((start, end, float(np.mean(cadences))))
+        i = j
+    return runs
 
 
 def detect_steps_in_window(

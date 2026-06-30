@@ -309,9 +309,9 @@ def test_step_count_biomarker_schema():
 
 
 def test_step_count_total_steps_consistency():
-    """The cumulative step_count final value must equal total_steps."""
+    """The per-bin step_count column must sum to total_steps."""
     result = run_step_count_on_sine(1.6, duration_s=20.0)
-    assert int(result.biomarker["step_count"].iloc[-1]) == result.total_steps
+    assert int(result.biomarker["step_count"].sum()) == result.total_steps
 
 
 def test_step_count_noisy_free_living_walk():
