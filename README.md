@@ -4,7 +4,7 @@ A comprehensive Python library for processing and analyzing physiological sensor
 
 ## Features
 
-- **Activity Analysis**: ENMO (Euclidean Norm Minus One), personalized Activity Score, activity intensity detection, energy expenditure estimation *(coming soon)*
+- **Activity Analysis**: ENMO (Euclidean Norm Minus One), personalized Activity Score, activity intensity detection, Step Counting, energy expenditure estimation *(coming soon)*
 - **ECG Processing**: QRS peak detection, heart rate calculation, inter-beat interval analysis  
 - **HRV Scoring**: Advanced heart rate variability scoring with trend analysis and stability metrics
 - **Balance Tests**: Postural sway analysis with stabilometric indices and 95% confidence ellipse
@@ -33,15 +33,19 @@ pip install physiodsp
 ### Activity Analysis - ENMO
 
 ```python
+from physiodsp.io import read_mat
 from physiodsp.activity.enmo import ENMO, ENMOSettings
 from physiodsp.sensors.imu.accelerometer import AccelerometerData
 
+# Load data from .mat file
+data = read_mat("sensor_data.mat")
+
 # Create accelerometer data
 accel_data = AccelerometerData(
-    timestamps=timestamps,
-    x=x_values,
-    y=y_values,
-    z=z_values,
+    timestamps=data['timestamps'],
+    x=data['x'],
+    y=data['y'],
+    z=data['z'],
     fs=64  # 64 Hz sampling frequency
 )
 
@@ -52,6 +56,21 @@ result = enmo.run(accel_data)
 # Get results
 print(result.biomarker)  # DataFrame with timestamps and ENMO values
 result.aggregate(method='mean')  # Aggregate results
+```
+
+### Activity Analysis - Step Count
+
+```python
+from physiodsp.activity.step_count import StepCount, StepCountSettings
+from physiodsp.sensors.imu.accelerometer import AccelerometerData
+
+# Initialize and run Step Count algorithm
+sc = StepCount(settings=StepCountSettings(bout_merge_gap_s=5.0))
+result = sc.run(accel_data)
+
+# Get results
+print(f"Total steps: {result.total_steps}")
+print(result.biomarker.head())  # DataFrame with timestamps, step_count, cadence, etc.
 ```
 
 ### ECG Peak Detection
@@ -125,6 +144,7 @@ print(result.biomarker_agg)  # DataFrame with HRV score
 - **Zero Crossing** ✅ (unit tested): Activity intensity detection
 - **Time Above Threshold** ✅ (unit tested): Vigorous activity quantification
 - **PIM** ✅ (unit tested): Proportional Integration Mode - multi-axis activity processing
+- **Step Count** ✅ (unit tested): Robust step detection and cadence estimation from wrist-worn accelerometers
 - **Activity Score** ✅ (unit tested): Personalized 0-100 daily activity and recovery score with baseline personalization
 - **Energy Expenditure** (coming soon): Calorie burn estimation algorithms
 - **Activity Recognition** (coming soon): Machine learning-based activity classification
@@ -146,6 +166,9 @@ print(result.biomarker_agg)  # DataFrame with HRV score
 
 ### `balance_tests/`
 - **Sway** ✅ (unit tested): Postural sway analysis — stabilometric indices (average distance, RMS, total path, velocity) for the full, ML, and AP paths, plus 95% confidence ellipse metrics
+
+### `io/`
+- **MAT Reader** ✅ (unit tested): Utility to load variables from MATLAB .mat files using `read_mat()`
 
 ### `dsp/`
 - **Convolution**: Signal processing utilities including moving averages
@@ -194,3 +217,4 @@ Contributions are welcome! Please ensure:
 - ENMO algorithm: based on accelerometer magnitude data
 - ECG Peak Detection: Pan-Tompkins-like approach with filtering
 - HRV Scoring: Z-score based with trend and stability analysis
+- Step Count: Multi-stage pipeline with periodicity detection and adaptive peak thresholding
